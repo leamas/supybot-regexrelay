@@ -36,10 +36,29 @@
 # pylint: disable=R0904
 
 
+from supybot import conf
 from supybot.test import *
 
 
-class ChannelRelayTestCase(PluginTestCase):
-    plugins = ('ChannelRelay',)
+class RegexRelayTest(ChannelPluginTestCase):
+    plugins = ('RegexRelay',)
+    channel = '#test'
+
+    def setUp(self, nick='test'):      # pylint: disable=W0221
+        ChannelPluginTestCase.setUp(self)
+        conf.supybot.plugins.regexrelay.source.setValue('#test1')
+        conf.supybot.plugins.regexrelay.target.setValue('#test')
+        conf.supybot.plugins.regexrelay.regexp.set('/git[.]/')
+
+    def testMatch(self):
+        self.feedMsg('git.message ivar', to='#test1', frm='test-bot')
+        self.assertResponse(' ', '<test-bot> git.message ivar')
+
+    def testNoMatch(self):
+        self.feedMsg('got.message ivar', to='#test1', frm='test-bot')
+        self.assertResponse('reload regexrelay ',
+                            'The operation succeeded.')
+
+
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab textwidth=79:

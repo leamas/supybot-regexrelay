@@ -27,7 +27,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 ###
 
-""" Relay data from one channöle to another. """
+""" Relay data from one channel to another. """
 
 import supybot.conf as conf
 import supybot.registry as registry
@@ -35,12 +35,7 @@ import supybot.registry as registry
 
 def configure(advanced):
     ''' Advanced configuration, not used. '''
-    # This will be called by supybot to configure this module.  advanced is
-    # a bool that specifies whether the user identified himself as an advanced
-    # user or not.  You should effect your configuration by manipulating the
-    # registry as appropriate.
-    ###from supybot.questions import expect, anything, something, yn
-    conf.registerPlugin('ChannelRelay', True)
+    conf.registerPlugin('RegexRelay', True)
 
 
 class ValidChannelOrNothing(conf.ValidChannel):
@@ -51,31 +46,31 @@ class ValidChannelOrNothing(conf.ValidChannel):
         except registry.InvalidRegistryValue:
             registry.Value.setValue(self, '')
 
-ChannelRelay = conf.registerPlugin('ChannelRelay')
-conf.registerGlobalValue(ChannelRelay, 'source',
+RegexRelay = conf.registerPlugin('RegexRelay')
+conf.registerGlobalValue(RegexRelay, 'source',
     ValidChannelOrNothing('', """Determines the channel that the bot will look
     for messages to relay from.  Messages matching
-    supybot.plugins.ChannelRelay.regexp will be relayed to the target channel
-    specified by supybot.plugins.ChannelRelay.target."""))
-conf.registerGlobalValue(ChannelRelay, 'target',
+    supybot.plugins.RegexRelay.regexp will be relayed to the target channel
+    specified by supybot.plugins.RegexRelay.target."""))
+conf.registerGlobalValue(RegexRelay, 'target',
     ValidChannelOrNothing('', """Determines the channel that the bot will send
     messages from the other channel.  Messages matching
-    supybot.plugins.ChannelRelay.regexp will be relayed to this channel from
+    supybot.plugins.RegexRelay.regexp will be relayed to this channel from
     the source channel."""))
-conf.registerGlobalValue(ChannelRelay, 'regexp',
+conf.registerGlobalValue(RegexRelay, 'regexp',
     registry.Regexp(None, """Determines what regular expression
     should be matched against messages to determine whether they should be
     relayed from the source channel to the target channel.  By default, the
     value is m/./, which means that all non-empty messages will be
     relayed."""))
-if ChannelRelay.regexp() is None:
-    ChannelRelay.regexp.set('m/./')
-conf.registerGlobalValue(ChannelRelay, 'fancy',
+if RegexRelay.regexp() is None:
+    RegexRelay.regexp.set('m/./')
+conf.registerGlobalValue(RegexRelay, 'fancy',
     registry.Boolean(True, """Determines whether the bot should relay the
     messages in fancy form (i.e., including the nick of the sender of the
     messages) or non-fancy form (i.e., without the nick of the sender of the
     messages)."""))
-conf.registerGlobalValue(ChannelRelay, 'prefix',
+conf.registerGlobalValue(RegexRelay, 'prefix',
     registry.String('', """Determines what prefix should be prepended to the
     relayed messages."""))
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Irccat post-commit
+# RegexRelay post-commit
 #
 commit=$(git rev-parse HEAD)
 commit=${commit:0:7}

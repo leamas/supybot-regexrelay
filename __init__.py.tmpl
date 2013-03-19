@@ -27,6 +27,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 ###
 
+# NOTE! __init__.py is created from __init__.py.tmpl by git post-commit hook.
+
 """
 This plugin is useful for relaying messages from one channel on a network to
 another channel on the same network.  If you're interested in relaying messages
@@ -34,26 +36,23 @@ between channels on different networks, check out the Relay plugin.
 """
 
 import supybot
-import supybot.world as world
-
-# Use this for the version of this plugin.  You may wish to put a CVS keyword
-# in here if you're keeping the plugin in CVS or some similar system.
-__version__ = ""
-
-__author__ = supybot.authors.jemfinch
-
-# This is a dictionary mapping supybot.Author instances to lists of
-# contributions.
-__contributors__ = {}
 
 import config
 import plugin
 reload(plugin)                        # In case we're being reloaded.
-# Add more reloads here if you add third-party modules and want them to be
-# reloaded when this plugin is reloaded.  Don't forget to import them as well!
 
-if world.testing:
+if supybot.world.testing:
     import test
+
+__version__ = "@commit@"
+
+__author__ = supybot.authors.jemfinch
+
+__url__ = 'https://github.com/leamas/supybot-regexrelay'
+
+# This is a dictionary mapping supybot.Author instances to lists of
+# contributions.
+__contributors__ = {}
 
 Class = plugin.Class
 configure = config.configure

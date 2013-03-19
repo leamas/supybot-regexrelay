@@ -36,16 +36,16 @@ configuration and use
 from supybot import callbacks
 from supybot import conf
 from supybot import ircmsgs
-#from supybot import log
-#from supybot import world
-#from supybot.commands import commalist
-#from supybot.commands import threading
-#from supybot.commands import wrap
+from supybot import log
 
 
-class ChannelRelay(callbacks.Privmsg):
+class RegexRelay(callbacks.Privmsg):
     ''' Main plugin class. '''
     # pylint: disable=E1101,R0904
+
+    def __init__(self, irc):
+        callbacks.Privmsg.__init__(self, irc)
+        self.log = log.getPluginLogger('regexrelay')
 
     def shouldRelay(self, msg):
         ''' Dummy docstring. '''
@@ -67,6 +67,7 @@ class ChannelRelay(callbacks.Privmsg):
                 else:
                     s = msg.args[1]
                 s = self.registryValue('prefix') + s
+                self.log.debug("regexrelay, queuing: " + s)
                 irc.queueMsg(ircmsgs.privmsg(target, s))
 
     def do376(self, irc, msg):
@@ -79,6 +80,6 @@ class ChannelRelay(callbacks.Privmsg):
             irc.queueMsg(networkGroup.channels.join(source))
 
 
-Class = ChannelRelay
+Class = RegexRelay
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab textwidth=79:

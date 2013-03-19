@@ -1,7 +1,9 @@
 #!/bin/bash
 #
-# Irccat pre-commit hook
+# RegexRelay pre-commit hook
 #
+
+set -x
 
 FILES=$(git diff --cached --name-status | \
             grep -v ^D | awk '$1 $2 { print $2}' | egrep -e '.py$|.tmpl$')
@@ -11,7 +13,7 @@ pep8 --config pep8.conf $FILES || {
     echo "pep8 failed ('git commit --no-verify' to override)"
     exit 1
 }
-pylint --rcfile=pylint.conf $FILES || {
+pylint --rcfile=pylint.conf -f text $FILES || {
     echo  "pylint failed ('git commit --no-verify' to override)'"
     exit 1
 }
